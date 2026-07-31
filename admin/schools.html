@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>إدارة المدارس</title>
+
+<link rel="stylesheet" href="../css/style.css">
+
+<style>
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+background:white;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:center;
+}
+
+th{
+background:#0b5ed7;
+color:white;
+}
+
+.actions button{
+margin:2px;
+padding:8px 12px;
+width:auto;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>🏫 إدارة المدارس</h1>
+
+<button onclick="location.href='add-school.html'">
+➕ إضافة مدرسة
+</button>
+
+<button onclick="location.href='dashboard.html'">
+⬅️ رجوع
+</button>
+
+<table>
+
+<thead>
+
+<tr>
+
+<th>الكود</th>
+<th>اسم المدرسة</th>
+<th>المحافظة</th>
+<th>المدير</th>
+<th>الهاتف</th>
+<th>الإجراءات</th>
+
+</tr>
+
+</thead>
+
+<tbody id="schoolsTable">
+
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+let schools = JSON.parse(localStorage.getItem("schools")) || [];
+
+let table = document.getElementById("schoolsTable");
+
+function loadSchools(){
+
+table.innerHTML="";
+
+schools.forEach((school,index)=>{
+
+table.innerHTML += `
+
+<tr>
+
+<td>SCH${String(index+1).padStart(4,"0")}</td>
+
+<td>${school.name}</td>
+
+<td>${school.city}</td>
+
+<td>${school.manager}</td>
+
+<td>${school.phone}</td>
+
+<td class="actions">
+
+<button onclick="deleteSchool(${school.id})">🗑 حذف</button>
+
+</td>
+
+</tr>
+
+`;
+
+});
+
+}
+
+function deleteSchool(id){
+
+if(confirm("هل تريد حذف المدرسة؟")){
+
+schools = schools.filter(s=>s.id!=id);
+
+localStorage.setItem("schools",JSON.stringify(schools));
+
+loadSchools();
+
+}
+
+}
+
+loadSchools();
+
+</script>
+
+</body>
+
+</html>
